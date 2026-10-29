@@ -1,50 +1,53 @@
 import express from 'express';
-import { fileURLToPath } from 'url';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
-// Define the application environment
-const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
-
-// Define the port number the server will listen on
-const PORT = process.env.PORT || 3000;
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+const port = process.env.PORT || 3000;
 
-/**
-  * Configure Express middleware
-  */
+// Set view engine to EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-// Serve static files from the public directory
+// Static middleware for public directory (CSS, images)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set EJS as the templating engine
-app.set('view engine', 'ejs');
-
-// Tell Express where to find your templates
-app.set('views', path.join(__dirname, 'src/views'));
-
-/**
-  * Routes
-  */
+// Home Route
 app.get('/', async (req, res) => {
-    const title = 'Home';
-    res.render('home', { title });
+  res.render('home', { title: 'Home' });
 });
 
+// Organizations Route
 app.get('/organizations', async (req, res) => {
-    const title = 'Our Partner Organizations';
-    res.render('organizations', { title });
+  res.render('organizations', { title: 'Organizations' });
 });
 
+// Projects Route
 app.get('/projects', async (req, res) => {
-    const title = 'Service Projects';
-    res.render('projects', { title });
+  res.render('projects', { title: 'Projects' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://127.0.0.1:${PORT}`);
-  console.log(`Environment: ${NODE_ENV}`);
+// Service Project Categories Route
+app.get('/categories', async (req, res) => {
+  const categoryList = [
+    'Environmental',
+    'Educational',
+    'Community Service',
+    'Health and Wellness'
+  ];
+
+  res.render('categories', {
+    title: 'Service Project Categories',
+    categories: categoryList
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
 });

@@ -1,0 +1,40 @@
+<%- include('partials/headers') %>
+
+<div class="page-container">
+  <header class="page-header">
+    <h1><%= title %></h1>
+    <p class="subtitle">Explore project categories to find service opportunities that match your interests.</p>
+  </header>
+
+  <section class="card-grid" aria-label="Service Project Categories">
+    <article class="card">
+      <div class="card-icon" aria-hidden="true">&#127793;</div>
+      <h2><%= categories[0] %></h2>
+      <p>Cleanups, tree planting, recycling initiatives, and sustainability awareness efforts.</p>
+      <a href="/projects" class="card-link">View Projects &rarr;</a>
+    </article>
+
+    <article class="card">
+      <div class="card-icon" aria-hidden="true">&#128218;</div>
+      <h2><%= categories[1] %></h2>
+      <p>Tutoring, literacy drives, classroom support, and educational workshops for all ages.</p>
+      <a href="/projects" class="card-link">View Projects &rarr;</a>
+    </article>
+
+    <article class="card">
+      <div class="card-icon" aria-hidden="true">&#129309;</div>
+      <h2><%= categories[2] %></h2>
+      <p>Food drives, shelter assistance, neighborhood repairs, and community center outreach.</p>
+      <a href="/projects" class="card-link">View Projects &rarr;</a>
+    </article>
+
+    <article class="card">
+      <div class="card-icon" aria-hidden="true">&#128154;</div>
+      <h2><%= categories[3] %></h2>
+      <p>Blood drives, mental health advocacy, fitness events, and community health clinics.</p>
+      <a href="/projects" class="card-link">View Projects &rarr;</a>
+    </article>
+  </section>
+</div>
+
+<%- include('partials/footer') %>
