@@ -37,17 +37,18 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
-    try {
-        const organizations = await getAllOrganizations();
-        const title = 'Our Partner Organizations';
+    const title = 'Our Partner Organizations';
+    let organizations = [];
+    let loadError = false;
 
-        res.render('organizations', { title, organizations });
+    try {
+        organizations = await getAllOrganizations();
     } catch (error) {
         console.error('Failed to load organizations page:', error);
-        res.status(500).type('html').send(
-            '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Organizations unavailable</title></head><body><h1>Unable to load organizations at this time.</h1></body></html>'
-        );
+        loadError = true;
     }
+
+    res.render('organizations', { title, organizations, loadError });
 });
 
 app.get('/projects', async (req, res) => {
