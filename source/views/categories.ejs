@@ -5,7 +5,16 @@
     <h1><%= title %></h1>
     <p class="subtitle">Explore project categories to find service opportunities that match your interests.</p>
   </header>
-
+ <main>
+  <% if (categories && categories.length > 0) { %>
+            <ul class="category-list">
+                <% categories.forEach(category => { %>
+                    <li><%= category.name %></li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No categories found at this time.</p>
+        <% } %>
   <section class="card-grid" aria-label="Service Project Categories">
     <article class="card">
       <div class="card-icon" aria-hidden="true">&#127793;</div>
@@ -36,5 +45,5 @@
     </article>
   </section>
 </div>
-
+</main>
 <%- include('../partials/footer') %>
