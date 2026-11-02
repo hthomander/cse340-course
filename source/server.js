@@ -4,6 +4,13 @@ import path from 'path';
 import { getAllOrganizations } from './models/organizations.js';
 import { testConnection } from './models/db.js';
 
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // <--- Allows self-signed certificates on Render
+  }
+});
+
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
