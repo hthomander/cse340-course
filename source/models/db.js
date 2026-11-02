@@ -1,5 +1,11 @@
 import { Pool } from 'pg';
 
+const connectionString = process.env.DB_URL || process.env.DATABASE_URL;
+
+if (!connectionString) {
+    throw new Error('Database connection is not configured. Set DB_URL or DATABASE_URL.');
+}
+
 /**
  * Connection pool for PostgreSQL database.
  * 
@@ -12,7 +18,7 @@ import { Pool } from 'pg';
  * postgresql://username:password@host:port/database
  */
 const pool = new Pool({
-    connectionString: process.env.DB_URL,
+    connectionString,
     ssl: true
 });
 
