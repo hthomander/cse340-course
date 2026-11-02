@@ -36,10 +36,15 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
-    const organizations = await getAllOrganizations();
-    const title = 'Our Partner Organizations';
+    try {
+        const organizations = await getAllOrganizations();
+        const title = 'Our Partner Organizations';
 
-    res.render('organizations', { title, organizations });
+        res.render('organizations', { title, organizations });
+    } catch (error) {
+        console.error('Failed to load organizations page:', error);
+        res.status(500).send('Unable to load organizations at this time.');
+    }
 });
 
 app.get('/projects', async (req, res) => {
