@@ -1,0 +1,142 @@
+Week 01 Coaching Session Transcript
+
+Coach: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+
+I’m your supportive, non-judgmental learning coach and software mentor. What name would you like me to use?
+
+User: HB
+
+Coach: Thanks, HB. We’ll keep this supportive and low-pressure—mistakes and “I don’t know” are welcome. We’ll take one topic at a time.
+
+Let’s start with Express routing. In server.js, the categories route is:
+
+app.get('/categories', async (req, res) => {
+    const categories = [
+        'Environmental',
+        'Educational',
+        'Community Service',
+        'Health and Wellness'
+    ];
+    res.render('categories', {
+        title: 'Service Project Categories',
+        categories
+    });
+});
+
+In your own words, what happens when a browser requests /categories, and why do you think this route sends the category list to res.render?
+
+User: I am unsure please explain
+
+Coach: That’s okay, HB. app.get('/categories', ...) tells Express: “When a browser requests the /categories page, run this function.” Express gives the function req (request details) and res (the response to send back).
+
+The function creates a list of categories, then res.render('categories', { ... }) asks EJS to turn the categories template into HTML. It passes in the page title and category list so the template can display them—for example, <%= categories[0] %> displays “Environmental.”
+
+What do you think the browser would show if the route rendered the template without passing in categories?
+
+User: I dont know
+
+Coach: That’s completely fine, HB. Without categories, EJS would try to evaluate <%= categories[0] %> but the variable wouldn’t exist in the template’s data, so rendering would fail and the page would likely return a server error.
+
+Let’s look at a JavaScript language principle in the route function from server.js:
+
+app.get('/categories', async (req, res) => {
+    const categories = ['Environmental', 'Educational', 'Community Service', 'Health and Wellness'];
+    res.render('categories', {
+        title: 'Service Project Categories',
+        categories
+    });
+});
+
+This uses a callback function, const, an array, and the shorthand property categories (which is the same as categories: categories). What stands out to you about this function, and what do you think one of those JavaScript choices helps with?
+
+User: it seems simple
+
+Coach: Yes, it is intentionally simple: the array keeps the related category names together, and const says the variable won’t be reassigned. For this assignment, that’s an easy-to-follow way to provide fixed data to the page. What do you think would be one advantage of keeping the category names in an array?
+
+User: organization
+
+Coach: Good connection, HB—organizations are also a list of related items, so the same array idea could be used for them. The category page is assembled from an EJS page and shared partials. In categories.ejs, the page includes the shared header and footer, and uses <%= categories[0] %> inside the page. How do you think using a shared header partial helps when the site has multiple pages?
+
+User: uniformity
+
+Coach: Exactly—sharing the header keeps the navigation and branding consistent across pages. Here’s the EJS pattern from categories.ejs:
+
+<%- include('../partials/headers') %>
+
+<section class="card-grid">
+  <article class="card">
+    <h2><%= categories[0] %></h2>
+    <p>Cleanups, tree planting, recycling initiatives, and sustainability awareness efforts.</p>
+    <a href="/projects" class="card-link">View Projects &rarr;</a>
+  </article>
+  <!-- Similar cards use categories[1], categories[2], and categories[3]. -->
+</section>
+
+<%- include('../partials/footer') %>
+
+What is this template doing with the shared partials and the category data, and why might that be a useful way to build the page?
+
+User: easier to implement when adding more pages etc
+
+Coach: Right—the shared partials save repetition and make it easier to keep new pages consistent. For the frontend CSS topic, here’s a snippet from main.css:
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+}
+
+.site-nav a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--color-primary);
+  background-color: #eff6ff;
+  outline: 2px solid var(--color-primary);
+}
+
+How do these CSS rules affect the navigation, and why might the hover and keyboard-focus styling be useful?
+
+User: Helps clients understand how to operate the webpage better
+
+Coach: That’s a useful point: clear visual feedback can help visitors understand what they can interact with. The :focus-visible rule also helps someone navigating without a mouse. What does the outline tell that person when they move through the links with a keyboard?
+
+User: what they will be selecting
+
+Coach: Exactly—the outline shows which link is currently selected, which is especially helpful with keyboard navigation. To make sure we’ve also covered JavaScript language choices, here’s the relevant function from server.js:
+
+app.get('/categories', async (req, res) => {
+    const categories = [
+        'Environmental',
+        'Educational',
+        'Community Service',
+        'Health and Wellness'
+    ];
+
+    res.render('categories', {
+        title: 'Service Project Categories',
+        categories
+    });
+});
+
+How does using a const array and passing it into res.render help this route provide data to the page?
+
+User: okay
+
+Coach: That’s okay. The array groups the four related names into one value, and res.render passes that value to EJS so the page can show each category. const means the variable binding isn’t reassigned. Which part feels most useful here: keeping the categories together, or passing them from the route into the template?
+
+User: passing them from the route into the template
+
+Coach: That’s a solid takeaway: routes can prepare data, then pass it to the template that renders the page. We covered Express routing, JavaScript arrays and const, EJS pages and shared partials, and CSS navigation feedback. What is one idea from today you’d like to remember for your next page?
+
+User: organization and language is very important
+
+Coach: That’s a great takeaway, HB. Clear organization makes code easier to extend, and careful language helps make the site easier for visitors to understand. Thanks for being open about what you knew and what was uncertain—that’s exactly how learning works.
