@@ -43,7 +43,9 @@ app.get('/organizations', async (req, res) => {
         res.render('organizations', { title, organizations });
     } catch (error) {
         console.error('Failed to load organizations page:', error);
-        res.status(500).send('Unable to load organizations at this time.');
+        res.status(500).type('html').send(
+            '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Organizations unavailable</title></head><body><h1>Unable to load organizations at this time.</h1></body></html>'
+        );
     }
 });
 
