@@ -1,0 +1,74 @@
+Week 02 Coaching Session Transcript
+
+Assistant: I’m your supportive, non-judgmental Learning Coach and Software Mentor. Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+
+Assistant: What name would you like me to use during our session?
+
+User: Hazel Beth
+
+Assistant: Hazel Beth, it’s good to have you here. This is a safe space to think aloud, and mistakes are welcome. I’ll keep us to one prompt at a time and we’ll start with database design.
+
+Assistant: Thanks, Hazel Beth. Let’s start with relational database design. In setup_projects.sql, the projects table references organization; in source/models/projects.js, the query joins those tables.
+
+Using that schema and query as our code example, walk me through how projects and organizations relate, what the join returns, and why you think this design was chosen.
+
+User: Its a very simplistic and easy to use design and I think that is why it was chosen
+
+Assistant: That makes sense—keeping the structure simple can make it easier to work with. What does the organization_id foreign key and the JOIN let the projects query connect?
+
+User: it allows the projects query connect
+
+Assistant: Right—the organization_id foreign key connects each project to its organization. In source/models/projects.js, the query selects project details and joins in the organization name. What would the project list be missing if that query didn’t join the organization table?
+
+User: foregein key
+
+Assistant: The foreign key is still stored in the projects table even without a JOIN. Without the JOIN, the query could return each project’s organization_id, but not the organization’s name.
+
+In the query from source/models/projects.js, which selected value provides the organization’s name in the results?
+
+User: return
+
+Assistant: The query does return rows, yes. Specifically, organization.name AS organization_name selects the organization’s name and gives that field a clear label in each result row (source/models/projects.js).
+
+Why do you think the query uses AS organization_name instead of leaving the field named name?
+
+User: so things don't get confused
+
+Assistant: Exactly—an alias makes the result clearer and avoids confusion with other name fields. Now let’s trace how Node.js connects to the database and retrieves project data.
+
+Assistant: For our second topic, server-side data access, getAllProjects in source/models/projects.js runs the SQL using the database connection from source/models/db.js, then returns result.rows:
+
+const result = await db.query(query);
+return result.rows;
+
+Walk me through what happens when getAllProjects runs, and why this function waits for the query before returning the rows.
+
+User: it waits because of the await function
+
+Assistant: Exactly—await pauses getAllProjects until the database query resolves, so result.rows is available before the function returns. If the query fails, the error can be handled by the calling route.
+
+For our next topic, server.js maps /projects to a route handler. What do you think that handler does between receiving a request and sending the projects page?
+
+User: it processes between receiving and sending
+
+Assistant: Right—the route handler processes the request. In server.js, app.get('/projects', async (req, res) => { ... }) maps a GET request to /projects to that handler. What does the handler send back after it retrieves the projects?
+
+User: send
+
+Assistant: Yes—the route sends the rendered projects page. It passes title, projects, and loadError to the EJS template (server.js).
+
+For our last topic, the template groups the projects and displays each organization heading (projects.ejs):
+
+<% projectGroups.forEach(group => { %>
+  <section class="project-organization">
+    <h3><%= group.organizationName %></h3>
+
+What do the <% ... %> and <%= ... %> tags do here, and why is that useful for displaying the organization names?
+
+User: I know this but its slipping my mind right now
+
+Assistant: No problem, it happens. Hint: one tag runs template code without displaying it; the other outputs a value into the page. Which tag outputs group.organizationName?
+
+User: <%=
+
+Assistant: That’s right: <%= outputs the value, while <% runs template logic without displaying it. We’ve covered all four topics; I’ll save our coaching conversation as a text transcript.
