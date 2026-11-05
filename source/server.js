@@ -77,35 +77,4 @@ app.listen(PORT, async () => {
   } catch (error) {
     console.error('Error connecting to the database:', error);
   }
-
-  const express = require('express');
-const app = express();
-const { getAllProjects } = require('./src/models/projects');
-
-// Set view engine
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
-
-// Service Projects Route
-app.get('/projects', async (req, res) => {
-  try {
-    const projects = await getAllProjects();
-    
-    // 3. Verify data in console
-    console.log("Retrieved Projects:", projects);
-
-    res.render('projects', { projects });
-  } catch (err) {
-    console.error("Error retrieving projects:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
 });
