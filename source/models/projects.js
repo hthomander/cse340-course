@@ -1,34 +1,22 @@
-const db = require('../database'); // Adjust path to your database connection module if needed
+import db from './db.js';
 
-/**
- * Retrieves all service projects along with their sponsoring organization names.
- * @returns {Promise<Array>} A promise that resolves to an array of project objects.
- */
-function getAllProjects() {
-  return new Promise((resolve, reject) => {
+const getAllProjects = async () => {
     const query = `
-      SELECT 
-        projects.id,
-        projects.title,
-        projects.description,
-        projects.location,
-        projects.date,
-        organizations.name AS organization_name
-      FROM projects
-      JOIN organizations ON projects.organization_id = organizations.id
-      ORDER BY projects.date ASC;
+        SELECT
+            projects.id,
+            projects.title,
+            projects.description,
+            projects.location,
+            projects.date,
+            organization.name AS organization_name
+        FROM public.projects AS projects
+        JOIN public.organization AS organization
+            ON projects.organization_id = organization.organization_id
+        ORDER BY projects.date ASC;
     `;
 
-    db.all(query, [], (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-}
-
-module.exports = {
-  getAllProjects
+    const result = await db.query(query);
+    return result.rows;
 };
+
+export { getAllProjects };
