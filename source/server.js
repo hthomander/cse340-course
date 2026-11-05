@@ -2,6 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { getAllOrganizations } from './models/organizations.js';
+import { getAllProjects } from './models/projects.js';
 import { testConnection } from './models/db.js';
 
 
@@ -53,7 +54,17 @@ app.get('/organizations', async (req, res) => {
 
 app.get('/projects', async (req, res) => {
     const title = 'Service Projects';
-    res.render('projects', { title });
+    let projects = [];
+    let loadError = false;
+
+    try {
+        projects = await getAllProjects();
+    } catch (error) {
+        console.error('Failed to load projects page:', error);
+        loadError = true;
+    }
+
+    res.render('projects', { title, projects, loadError });
 });
 
 app.get('/categories', async (req, res) => {

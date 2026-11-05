@@ -7,12 +7,34 @@
   </header>
 
   <section>
-    <h2>Upcoming Service Projects</h2>
-    <ul>
-      <li>Park Cleanup - Join us to clean up local parks and make them beautiful!</li>
-      <li>Food Drive - Help collect and distribute food to those in need.</li>
-      <li>Community Tutoring - Volunteer to tutor students in various subjects.</li>
-    </ul>
+    <% if (loadError) { %>
+      <p role="status">Project data is temporarily unavailable. Please try again later.</p>
+    <% } else { %>
+      <h2>Upcoming Service Projects</h2>
+      <% if (projects.length > 0) { %>
+        <ul>
+          <% projects.forEach(project => { %>
+            <li>
+              <strong><%= project.title %></strong>
+              <% if (project.description) { %>
+                - <%= project.description %>
+              <% } %>
+              <% if (project.location) { %>
+                <span>Location: <%= project.location %></span>
+              <% } %>
+              <% if (project.date) { %>
+                <span>Date: <%= project.date %></span>
+              <% } %>
+              <% if (project.organization_name) { %>
+                <span>Organized by: <%= project.organization_name %></span>
+              <% } %>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>No service projects found.</p>
+      <% } %>
+    <% } %>
   </section>
 </section>
 
