@@ -7,3 +7,29 @@ CREATE TABLE IF NOT EXISTS public.projects (
     location TEXT,
     date DATE
 );
+
+INSERT INTO public.projects (organization_id, title, description, location, date)
+SELECT project.organization_id, project.title, project.description, project.location, project.date
+FROM (VALUES
+    (1, 'Holiday Food Drive', 'Collect and sort non-perishable food items for winter distribution.', 'Main Community Center', DATE '2026-11-20'),
+    (1, 'Soup Kitchen Volunteer Shift', 'Prep ingredients and serve hot meals to community members.', 'Downtown Shelter Kitchen', DATE '2026-11-25'),
+    (1, 'Thanksgiving Basket Assembly', 'Pack complete Thanksgiving meal boxes for 200 families.', 'Warehouse B', DATE '2026-11-28'),
+    (1, 'Weekend Mobile Pantry', 'Distribute fresh produce at the neighborhood park.', 'Westside Park', DATE '2026-12-05'),
+    (1, 'End-of-Year Inventory Audit', 'Count and organize remaining pantry supplies.', 'Main Community Center', DATE '2026-12-18'),
+    (2, 'Riverbank Cleanup', 'Remove litter and plastic waste along the local river trail.', 'Riverside Trailhead', DATE '2026-11-22'),
+    (2, 'Fall Tree Planting', 'Plant 50 native saplings along city sidewalks.', 'City Park East', DATE '2026-11-29'),
+    (2, 'Community E-Waste Recycling', 'Collect old electronics and batteries for safe disposal.', 'Municipal Parking Lot', DATE '2026-12-06'),
+    (2, 'Park Winterization', 'Mulch flower beds and protect young shrubs from frost.', 'Central Botanical Gardens', DATE '2026-12-12'),
+    (2, 'Neighborhood Energy Audit Workshop', 'Teach residents how to reduce home energy waste.', 'Public Library Room 3', DATE '2026-12-15'),
+    (3, 'After-School Reading Buddies', 'Read one-on-one with elementary students to boost reading fluency.', 'Lincoln Elementary Library', DATE '2026-11-21'),
+    (3, 'Childrens Book Drive Sorting', 'Sort and categorize donated books by reading level.', 'Community Literacy Center', DATE '2026-11-27'),
+    (3, 'Weekend Storytime Event', 'Host an interactive storytelling morning for toddlers.', 'City Bookstore', DATE '2026-12-04'),
+    (3, 'Library Book Shelving Assistance', 'Help organize and shelve new youth acquisitions.', 'Main City Library', DATE '2026-12-11'),
+    (3, 'Holiday Gift & Book Giveaway', 'Distribute wrapped books to children at the holiday party.', 'Youth Center Gymnasium', DATE '2026-12-20')
+) AS project (organization_id, title, description, location, date)
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM public.projects AS existing
+    WHERE existing.organization_id = project.organization_id
+      AND existing.title = project.title
+);
