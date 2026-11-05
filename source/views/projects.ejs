@@ -1,6 +1,6 @@
 <%- include('../partials/headers') %>
 
-<section class="page-container">
+<section class="page-container projects-page">
   <header class="page-header">
     <h1><%= title %></h1>
     <p class="subtitle">Find a project and make a difference in your community.</p>
@@ -10,7 +10,7 @@
     <% if (loadError) { %>
       <p role="status">Project data is temporarily unavailable. Please try again later.</p>
     <% } else { %>
-      <h2>Upcoming Service Projects</h2>
+      <h2 class="projects-heading">Upcoming Service Projects</h2>
       <% if (projects.length > 0) { %>
         <% const projectGroups = projects.reduce((groups, project) => {
           const organizationName = project.organization_name || 'Other organizations';
@@ -23,21 +23,23 @@
           return groups;
         }, []); %>
         <% projectGroups.sort((a, b) => a.organizationName.localeCompare(b.organizationName)).forEach(group => { %>
-          <section>
-            <h3><%= group.organizationName %></h3>
-            <ul>
+          <section class="project-organization">
+            <h3 class="project-organization-title"><%= group.organizationName %></h3>
+            <ul class="project-list">
               <% group.projects.forEach(project => { %>
-                <li>
-                  <strong><%= project.title %></strong>
+                <li class="project-item">
+                  <strong class="project-title"><%= project.title %></strong>
                   <% if (project.description) { %>
                     - <%= project.description %>
                   <% } %>
-                  <% if (project.location) { %>
-                    <span>Location: <%= project.location %></span>
-                  <% } %>
-                  <% if (project.date) { %>
-                    <span>Date: <%= project.date %></span>
-                  <% } %>
+                  <div class="project-details">
+                    <% if (project.location) { %>
+                      <span>Location: <%= project.location %></span>
+                    <% } %>
+                    <% if (project.date) { %>
+                      <span>Date: <%= project.date %></span>
+                    <% } %>
+                  </div>
                 </li>
               <% }) %>
             </ul>

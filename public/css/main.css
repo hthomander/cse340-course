@@ -110,6 +110,60 @@ body {
   margin: 0 auto;
 }
 
+.projects-heading,
+.project-organization-title {
+  text-align: center;
+}
+
+.projects-heading {
+  margin-bottom: 1.5rem;
+  color: var(--color-primary-hover);
+}
+
+.project-organization {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--color-bg-card);
+  border: 1px solid #bfdbfe;
+  border-left: 5px solid var(--color-primary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.project-organization-title {
+  margin-bottom: 1rem;
+  color: var(--color-primary-hover);
+  font-size: 1.35rem;
+}
+
+.project-list {
+  list-style: none;
+}
+
+.project-item {
+  padding: 1rem;
+  background-color: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.project-item + .project-item {
+  margin-top: 0.75rem;
+}
+
+.project-title {
+  color: var(--color-text-main);
+}
+
+.project-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
 /* Card Grid */
 .card-grid {
   display: grid;
