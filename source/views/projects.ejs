@@ -12,25 +12,37 @@
     <% } else { %>
       <h2>Upcoming Service Projects</h2>
       <% if (projects.length > 0) { %>
-        <ul>
-          <% projects.forEach(project => { %>
-            <li>
-              <strong><%= project.title %></strong>
-              <% if (project.description) { %>
-                - <%= project.description %>
-              <% } %>
-              <% if (project.location) { %>
-                <span>Location: <%= project.location %></span>
-              <% } %>
-              <% if (project.date) { %>
-                <span>Date: <%= project.date %></span>
-              <% } %>
-              <% if (project.organization_name) { %>
-                <span>Organized by: <%= project.organization_name %></span>
-              <% } %>
-            </li>
-          <% }) %>
-        </ul>
+        <% const projectGroups = projects.reduce((groups, project) => {
+          const organizationName = project.organization_name || 'Other organizations';
+          const group = groups.find(item => item.organizationName === organizationName);
+          if (group) {
+            group.projects.push(project);
+          } else {
+            groups.push({ organizationName, projects: [project] });
+          }
+          return groups;
+        }, []); %>
+        <% projectGroups.sort((a, b) => a.organizationName.localeCompare(b.organizationName)).forEach(group => { %>
+          <section>
+            <h3><%= group.organizationName %></h3>
+            <ul>
+              <% group.projects.forEach(project => { %>
+                <li>
+                  <strong><%= project.title %></strong>
+                  <% if (project.description) { %>
+                    - <%= project.description %>
+                  <% } %>
+                  <% if (project.location) { %>
+                    <span>Location: <%= project.location %></span>
+                  <% } %>
+                  <% if (project.date) { %>
+                    <span>Date: <%= project.date %></span>
+                  <% } %>
+                </li>
+              <% }) %>
+            </ul>
+          </section>
+        <% }) %>
       <% } else { %>
         <p>No service projects found.</p>
       <% } %>
