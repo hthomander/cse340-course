@@ -14,6 +14,7 @@
       <ul>
         <% if (organizations.length > 0) { %>
           <% organizations.forEach(organization => { %>
+            <a href="/organization/<%= organization.organization_id %>"><%= organization.name %></a>
             <li>
               <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
               <strong><%= organization.name %></strong>: <%= organization.contact_email %>

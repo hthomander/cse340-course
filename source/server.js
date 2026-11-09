@@ -1,10 +1,8 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { getAllOrganizations } from './models/organizations.js';
-import { getAllProjects } from './models/projects.js';
-import { testConnection } from './models/db.js';
-
+import { testConnection } from './src/models/db.js';
+import router from './src/routes.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -22,10 +20,13 @@ const app = express();
   */
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
+
+// Tell Express where to find your templates
+app.set('views', path.join(__dirname, 'src/views'));
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
@@ -35,58 +36,14 @@ app.use((req, res, next) => {
     next(); // Pass control to the next middleware or route
 });
 
-// Tell Express where to find your templates
-app.set('views', path.join(__dirname, 'views'));
-/**
-  * Routes
-  */
-app.get('/', async (req, res) => {
-    const title = 'Home';
-    res.render('home', { title });
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+    res.locals.NODE_ENV = NODE_ENV;
+    next();
 });
 
-app.get('/organizations', async (req, res) => {
-    const title = 'Our Partner Organizations';
-    let organizations = [];
-    let loadError = false;
-
-    try {
-        organizations = await getAllOrganizations();
-    } catch (error) {
-        console.error('Failed to load organizations page:', error);
-        loadError = true;
-    }
-
-    res.render('organizations', { title, organizations, loadError });
-});
-
-app.get('/projects', async (req, res) => {
-    const title = 'Service Projects';
-    let projects = [];
-    let loadError = false;
-
-    try {
-        projects = await getAllProjects();
-    } catch (error) {
-        console.error('Failed to load projects page:', error);
-        loadError = true;
-    }
-
-    res.render('projects', { title, projects, loadError });
-});
-
-app.get('/categories', async (req, res) => {
-    const categories = [
-        'Environmental',
-        'Educational',
-        'Community Service',
-        'Health and Wellness'
-    ];
-    res.render('categories', {
-        title: 'Service Project Categories',
-        categories
-    });
-});
+// Use the imported router to handle routes
+app.use(router);
 
 // Catch-all route for 404 errors
 app.use((req, res, next) => {
