@@ -19,23 +19,12 @@ VALUES
 ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO public.project_categories (project_id, category_id)
-SELECT
-    projects.id,
-    categories.id
-FROM public.projects AS projects
+SELECT mappings.project_id, categories.id
+FROM (VALUES
+    (1, 'Community Outreach'),
+    (2, 'Environmental Conservation'),
+    (3, 'Education & Youth')
+) AS mappings (project_id, category_name)
 JOIN public.categories AS categories
-  ON categories.name = CASE
-    WHEN projects.title ILIKE '%cleanup%'
-      OR projects.title ILIKE '%tree%'
-      OR projects.title ILIKE '%recycling%'
-      OR projects.title ILIKE '%winterization%'
-      OR projects.title ILIKE '%energy audit%'
-      THEN 'Environmental Conservation'
-    WHEN projects.title ILIKE '%reading%'
-      OR projects.title ILIKE '%book%'
-      OR projects.title ILIKE '%storytime%'
-      OR projects.title ILIKE '%library%'
-      THEN 'Education & Youth'
-    ELSE 'Community Outreach'
-  END
+  ON categories.name = mappings.category_name
 ON CONFLICT (project_id, category_id) DO NOTHING;
