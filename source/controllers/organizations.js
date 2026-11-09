@@ -1,7 +1,22 @@
 // Import any needed model functions
-import { getAllOrganizations } from '../models/organizations.js';
 import { getAllOrganizations, getOrganizationDetails } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
+
+const showOrganizationsPage = async (req, res) => {
+    const title = 'Our Partner Organizations';
+    let organizations = [];
+    let loadError = false;
+
+    try {
+        organizations = await getAllOrganizations();
+    } catch (error) {
+        console.error('Failed to load organizations page:', error);
+        loadError = true;
+    }
+
+    res.render('organizations', { title, organizations, loadError });
+};
+
 // Define any controller functions
 const showOrganizationDetailsPage = async (req, res) => {
     const organizationId = req.params.id;

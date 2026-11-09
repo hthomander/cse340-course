@@ -1,8 +1,8 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { testConnection } from './src/models/db.js';
-import router from './src/routes.js';
+import { testConnection } from './models/db.js';
+import router from './routes.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -20,13 +20,13 @@ const app = express();
   */
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
 
 // Tell Express where to find your templates
-app.set('views', path.join(__dirname, 'src/views'));
+app.set('views', path.join(__dirname, 'views'));
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
@@ -70,7 +70,7 @@ app.use((err, req, res, next) => {
     };
     
     // Render the appropriate error template
-    res.status(status).render(`errors/${template}`, context);
+    res.status(status).render(`partials/errors/${template}`, context);
 });
 
 app.listen(PORT, async () => {
