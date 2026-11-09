@@ -6,7 +6,9 @@
     <p class="subtitle">Explore project categories to find service opportunities that match your interests.</p>
   </header>
  <main>
-  <% if (categories.length > 0) { %>
+  <% if (loadError) { %>
+    <p role="status">Category data is temporarily unavailable. Please try again later.</p>
+  <% } else if (categories.length > 0) { %>
     <section class="card-grid" aria-label="Service Project Categories">
       <% categories.forEach(category => { %>
         <article class="card">

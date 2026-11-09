@@ -6,10 +6,19 @@ import {
 
 // Define any controller functions
 const showCategoriesPage = async (req, res) => {
-    const categories = await getAllCategories();
+    let categories = [];
+    let loadError = false;
+
+    try {
+        categories = await getAllCategories();
+    } catch (error) {
+        console.error('Failed to load categories page:', error);
+        loadError = true;
+    }
+
     const title = 'Service Project Categories';
 
-    res.render('categories', { title, categories });
+    res.render('categories', { title, categories, loadError });
 };
 
 const showCategoryDetailsPage = async (req, res, next) => {
