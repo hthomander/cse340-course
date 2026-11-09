@@ -1,0 +1,37 @@
+<%- include('partials/headers') %>
+
+<section class="page-container">
+  <header class="page-header">
+    <h1><%= organizationDetails.name %></h1>
+    <p class="subtitle"><%= organizationDetails.description %></p>
+  </header>
+
+  <section>
+    <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo">
+    <p>Contact: <a href="mailto:<%= organizationDetails.contact_email %>"><%= organizationDetails.contact_email %></a></p>
+
+    <h2>Service Projects</h2>
+    <% if (projects.length > 0) { %>
+      <ul class="project-list">
+        <% projects.forEach(project => { %>
+          <li class="project-item">
+            <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+            <% if (project.description) { %>
+              <p><%= project.description %></p>
+            <% } %>
+            <% if (project.location) { %>
+              <span>Location: <%= project.location %></span>
+            <% } %>
+            <% if (project.date) { %>
+              <span>Date: <%= project.date %></span>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No service projects found for this organization.</p>
+    <% } %>
+  </section>
+</section>
+
+<%- include('partials/footer') %>

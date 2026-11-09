@@ -18,13 +18,19 @@ const showOrganizationsPage = async (req, res) => {
 };
 
 // Define any controller functions
-const showOrganizationDetailsPage = async (req, res) => {
+const showOrganizationDetailsPage = async (req, res, next) => {
     const organizationId = req.params.id;
     const organizationDetails = await getOrganizationDetails(organizationId);
-    const projects = await getProjectsByOrganizationId(organizationId);
-    const title = 'Organization Details';
+    if (!organizationDetails) {
+        const error = new Error('Organization Not Found');
+        error.status = 404;
+        return next(error);
+    }
 
-    res.render('organization', {title, organizationDetails, projects});
+    const projects = await getProjectsByOrganizationId(organizationId);
+    const title = organizationDetails.name;
+
+    res.render('organization', { title, organizationDetails, projects });
 };
 
 // Export any controller functions
