@@ -27,6 +27,14 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
 
+// Middleware to log all incoming requests
+app.use((req, res, next) => {
+    if (NODE_ENV === 'development') {
+        console.log(`${req.method} ${req.url}`);
+    }
+    next(); // Pass control to the next middleware or route
+});
+
 // Tell Express where to find your templates
 app.set('views', path.join(__dirname, 'views'));
 /**
