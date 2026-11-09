@@ -18,13 +18,60 @@ VALUES
     ('Education & Youth')
 ON CONFLICT (name) DO NOTHING;
 
+WITH assignments (project_title, category_name) AS (
+    VALUES
+        ('Weekend Mobile Pantry', 'Community Outreach'),
+        ('Thanksgiving Basket Assembly', 'Community Outreach'),
+        ('Holiday Gift & Book Giveaway', 'Education & Youth'),
+        ('End-of-Year Inventory Audit', 'Community Outreach'),
+        ('Childrens Book Drive Sorting', 'Education & Youth'),
+        ('Neighborhood Energy Audit Workshop', 'Environmental Conservation'),
+        ('Soup Kitchen Volunteer Shift', 'Community Outreach'),
+        ('After-School Reading Buddies', 'Education & Youth'),
+        ('Community E-Waste Recycling', 'Environmental Conservation'),
+        ('Weekend Storytime Event', 'Education & Youth'),
+        ('Riverbank Cleanup', 'Environmental Conservation'),
+        ('Holiday Food Drive', 'Community Outreach'),
+        ('Park Winterization', 'Environmental Conservation'),
+        ('Fall Tree Planting', 'Environmental Conservation'),
+        ('Library Book Shelving Assistance', 'Education & Youth')
+),
+resolved_assignments AS (
+    SELECT projects.id AS project_id, categories.id AS category_id
+    FROM assignments
+    JOIN public.projects AS projects
+      ON projects.title = assignments.project_title
+    JOIN public.categories AS categories
+      ON categories.name = assignments.category_name
+)
+DELETE FROM public.project_categories AS project_categories
+USING resolved_assignments
+WHERE project_categories.project_id = resolved_assignments.project_id
+  AND project_categories.category_id <> resolved_assignments.category_id;
+
+WITH assignments (project_title, category_name) AS (
+    VALUES
+        ('Weekend Mobile Pantry', 'Community Outreach'),
+        ('Thanksgiving Basket Assembly', 'Community Outreach'),
+        ('Holiday Gift & Book Giveaway', 'Education & Youth'),
+        ('End-of-Year Inventory Audit', 'Community Outreach'),
+        ('Childrens Book Drive Sorting', 'Education & Youth'),
+        ('Neighborhood Energy Audit Workshop', 'Environmental Conservation'),
+        ('Soup Kitchen Volunteer Shift', 'Community Outreach'),
+        ('After-School Reading Buddies', 'Education & Youth'),
+        ('Community E-Waste Recycling', 'Environmental Conservation'),
+        ('Weekend Storytime Event', 'Education & Youth'),
+        ('Riverbank Cleanup', 'Environmental Conservation'),
+        ('Holiday Food Drive', 'Community Outreach'),
+        ('Park Winterization', 'Environmental Conservation'),
+        ('Fall Tree Planting', 'Environmental Conservation'),
+        ('Library Book Shelving Assistance', 'Education & Youth')
+)
 INSERT INTO public.project_categories (project_id, category_id)
-SELECT mappings.project_id, categories.id
-FROM (VALUES
-    (1, 'Community Outreach'),
-    (2, 'Environmental Conservation'),
-    (3, 'Education & Youth')
-) AS mappings (project_id, category_name)
+SELECT projects.id, categories.id
+FROM assignments
+JOIN public.projects AS projects
+  ON projects.title = assignments.project_title
 JOIN public.categories AS categories
-  ON categories.name = mappings.category_name
+  ON categories.name = assignments.category_name
 ON CONFLICT (project_id, category_id) DO NOTHING;
