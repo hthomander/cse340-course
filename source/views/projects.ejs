@@ -28,7 +28,7 @@
             <ul class="project-list">
               <% group.projects.forEach(project => { %>
                 <li class="project-item">
-                  <strong class="project-title"><%= project.title %></strong>
+                  <a class="project-title" href="/project/<%= project.project_id %>"><%= project.title %></a>
                   <% if (project.description) { %>
                     - <%= project.description %>
                   <% } %>

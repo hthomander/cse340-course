@@ -1,15 +1,30 @@
+import {
+    getAllCategories,
+    getCategoryById,
+    getProjectsByCategoryId
+} from '../models/categories.js';
+
 // Define any controller functions
 const showCategoriesPage = async (req, res) => {
-    const categories = [
-        'Environmental',
-        'Educational',
-        'Community Service',
-        'Health and Wellness'
-    ];
+    const categories = await getAllCategories();
     const title = 'Service Project Categories';
 
     res.render('categories', { title, categories });
 };
 
+const showCategoryDetailsPage = async (req, res, next) => {
+    const category = await getCategoryById(req.params.id);
+    if (!category) {
+        const error = new Error('Category Not Found');
+        error.status = 404;
+        return next(error);
+    }
+
+    const projects = await getProjectsByCategoryId(req.params.id);
+    const title = category.name;
+
+    res.render('category', { title, category, projects });
+};
+
 // Export any controller functions
-export { showCategoriesPage };
+export { showCategoriesPage, showCategoryDetailsPage };

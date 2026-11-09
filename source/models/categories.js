@@ -1,20 +1,63 @@
-const db = require('../data/database'); // Adjust path to your database connection module if necessary
+import db from './db.js';
 
-/**
- * Retrieves all categories from the database.
- * @returns {Promise<Array>} List of category objects
- */
-async function getAllCategories() {
-    try {
-        const query = 'SELECT * FROM categories ORDER BY name ASC';
-        const categories = await db.all(query); // Or db.query(query) depending on your SQL driver (sqlite vs pg)
-        return categories;
-    } catch (error) {
-        console.error('Error retrieving categories:', error);
-        throw error;
-    }
-}
+const getAllCategories = async () => {
+    const query = `
+        SELECT id AS category_id, name
+        FROM public.categories
+        ORDER BY name;
+    `;
 
-module.exports = {
-    getAllCategories
+    const result = await db.query(query);
+    return result.rows;
+};
+
+const getCategoryById = async (categoryId) => {
+    const query = `
+        SELECT id AS category_id, name
+        FROM public.categories
+        WHERE id = $1;
+    `;
+
+    const result = await db.query(query, [categoryId]);
+    return result.rows[0] || null;
+};
+
+const getCategoriesByProjectId = async (projectId) => {
+    const query = `
+        SELECT categories.id AS category_id, categories.name
+        FROM public.categories AS categories
+        JOIN public.project_categories AS project_categories
+          ON project_categories.category_id = categories.id
+        WHERE project_categories.project_id = $1
+        ORDER BY categories.name;
+    `;
+
+    const result = await db.query(query, [projectId]);
+    return result.rows;
+};
+
+const getProjectsByCategoryId = async (categoryId) => {
+    const query = `
+        SELECT
+          projects.id AS project_id,
+          projects.title,
+          projects.description,
+          projects.location,
+          projects.date
+        FROM public.projects AS projects
+        JOIN public.project_categories AS project_categories
+          ON project_categories.project_id = projects.id
+        WHERE project_categories.category_id = $1
+        ORDER BY projects.date ASC;
+    `;
+
+    const result = await db.query(query, [categoryId]);
+    return result.rows;
+};
+
+export {
+    getAllCategories,
+    getCategoryById,
+    getCategoriesByProjectId,
+    getProjectsByCategoryId
 };

@@ -1,0 +1,33 @@
+<%- include('partials/headers') %>
+
+<section class="page-container">
+  <header class="page-header">
+    <h1><%= project.title %></h1>
+    <p class="subtitle"><%= project.organization_name %></p>
+  </header>
+
+  <section>
+    <% if (project.description) { %>
+      <p><%= project.description %></p>
+    <% } %>
+    <% if (project.location) { %>
+      <p>Location: <%= project.location %></p>
+    <% } %>
+    <% if (project.date) { %>
+      <p>Date: <%= project.date %></p>
+    <% } %>
+
+    <h2>Categories</h2>
+    <% if (categories.length > 0) { %>
+      <ul class="category-list">
+        <% categories.forEach(category => { %>
+          <li><a href="/category/<%= category.category_id %>"><%= category.name %></a></li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No categories assigned to this project.</p>
+    <% } %>
+  </section>
+</section>
+
+<%- include('partials/footer') %>
