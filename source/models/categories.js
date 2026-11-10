@@ -38,11 +38,13 @@ const getCategoriesByProjectId = async (projectId) => {
 
 const getCategoriesByOrganizationId = async (organizationId) => {
     const query = `
-        SELECT categories.id AS category_id, categories.name
+        SELECT DISTINCT categories.id AS category_id, categories.name
         FROM public.categories AS categories
-        JOIN public.organization_categories AS organization_categories
-          ON organization_categories.category_id = categories.id
-        WHERE organization_categories.organization_id = $1
+        JOIN public.project_categories AS project_categories
+          ON project_categories.category_id = categories.id
+        JOIN public.projects AS projects
+          ON projects.id = project_categories.project_id
+        WHERE projects.organization_id = $1
         ORDER BY categories.name;
     `;
 
