@@ -10,6 +10,13 @@
     <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo">
     <p>Contact: <a href="mailto:<%= organizationDetails.contact_email %>"><%= organizationDetails.contact_email %></a></p>
 
+    <h2>Categories</h2>
+    <ul>
+      <% categories.forEach(category => { %>
+        <li><a href="/category/<%= category.category_id %>"><%= category.name %></a></li>
+      <% }) %>
+    </ul>
+
     <h2>Service Projects</h2>
     <% if (projects.length > 0) { %>
       <ul class="project-list">

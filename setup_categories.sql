@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS public.project_categories (
     PRIMARY KEY (project_id, category_id)
 );
 
+CREATE TABLE IF NOT EXISTS public.organization_categories (
+    organization_id INTEGER NOT NULL
+        REFERENCES public.organization (organization_id) ON DELETE CASCADE,
+    category_id INTEGER NOT NULL
+        REFERENCES public.categories (id) ON DELETE CASCADE,
+    PRIMARY KEY (organization_id, category_id)
+);
+
 INSERT INTO public.categories (name)
 VALUES
     ('Community Outreach'),
@@ -75,3 +83,10 @@ JOIN public.projects AS projects
 JOIN public.categories AS categories
   ON categories.name = assignments.category_name
 ON CONFLICT (project_id, category_id) DO NOTHING;
+
+INSERT INTO public.organization_categories (organization_id, category_id)
+SELECT DISTINCT projects.organization_id, project_categories.category_id
+FROM public.projects AS projects
+JOIN public.project_categories AS project_categories
+  ON project_categories.project_id = projects.id
+ON CONFLICT (organization_id, category_id) DO NOTHING;
