@@ -1,6 +1,8 @@
 // Import any needed model functions
-import { getAllProjects, getProjectById } from '../models/projects.js';
+import { getUpcomingProjects, getProjectDetails } from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
+
+const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
 // Define any controller functions
 const showProjectsPage = async (req, res) => {
@@ -8,19 +10,19 @@ const showProjectsPage = async (req, res) => {
     let loadError = false;
 
     try {
-        projects = await getAllProjects();
+        projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
     } catch (error) {
         console.error('Failed to load projects page:', error);
         loadError = true;
     }
 
-    const title = 'Service Projects';
+    const title = 'Upcoming Service Projects';
 
     res.render('projects', { title, projects, loadError });
 };
 
 const showProjectDetailsPage = async (req, res, next) => {
-    const project = await getProjectById(req.params.id);
+    const project = await getProjectDetails(req.params.id);
     if (!project) {
         const error = new Error('Project Not Found');
         error.status = 404;

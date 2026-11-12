@@ -12,39 +12,30 @@
     <% } else { %>
       <h2 class="projects-heading">Upcoming Service Projects</h2>
       <% if (projects.length > 0) { %>
-        <% const projectGroups = projects.reduce((groups, project) => {
-          const organizationName = project.organization_name || 'Other organizations';
-          const group = groups.find(item => item.organizationName === organizationName);
-          if (group) {
-            group.projects.push(project);
-          } else {
-            groups.push({ organizationName, projects: [project] });
-          }
-          return groups;
-        }, []); %>
-        <% projectGroups.sort((a, b) => a.organizationName.localeCompare(b.organizationName)).forEach(group => { %>
-          <section class="project-organization">
-            <h3 class="project-organization-title"><%= group.organizationName %></h3>
-            <ul class="project-list">
-              <% group.projects.forEach(project => { %>
-                <li class="project-item">
-                  <a class="project-title" href="/project/<%= project.project_id %>"><%= project.title %></a>
-                  <% if (project.description) { %>
-                    - <%= project.description %>
+        <ul class="project-list">
+          <% projects.forEach(project => { %>
+            <li class="project-item">
+              <a class="project-card" href="/project/<%= project.project_id %>">
+                <span class="project-title"><%= project.title %></span>
+                <% if (project.description) { %>
+                  <span><%= project.description %></span>
+                <% } %>
+                <span class="project-details">
+                  <% if (project.location) { %>
+                    <span>Location: <%= project.location %></span>
                   <% } %>
-                  <div class="project-details">
-                    <% if (project.location) { %>
-                      <span>Location: <%= project.location %></span>
-                    <% } %>
-                    <% if (project.date) { %>
-                      <span>Date: <%= project.date %></span>
-                    <% } %>
-                  </div>
-                </li>
-              <% }) %>
-            </ul>
-          </section>
-        <% }) %>
+                  <% if (project.date) { %>
+                    <span>Date: <%= project.date %></span>
+                  <% } %>
+                </span>
+              </a>
+              <p>
+                Partner organization:
+                <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
+              </p>
+            </li>
+          <% }) %>
+        </ul>
       <% } else { %>
         <p>No service projects found.</p>
       <% } %>
