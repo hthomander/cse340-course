@@ -1,13 +1,13 @@
 import express from 'express';
-import {
-    showOrganizationDetailsPage,
-    showNewOrganizationForm,
-    processNewOrganizationForm,
-    organizationValidation
-} from './controllers/organizations.js';
 
 import { showHomePage } from './controllers/index.js';
-import { showOrganizationsPage, showNewOrganizationForm, processNewOrganizationForm, showOrganizationDetailsPage } from './controllers/organizations.js';
+import {
+    showOrganizationsPage,
+    showNewOrganizationForm,
+    processNewOrganizationForm,
+    showOrganizationDetailsPage,
+    organizationValidation
+} from './controllers/organizations.js';
 import { showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
 import { showCategoriesPage, showCategoryDetailsPage } from './controllers/categories.js';
 import { testErrorPage } from './controllers/errors.js';
