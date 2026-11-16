@@ -6,7 +6,7 @@ import {
     showNewOrganizationForm,
     processNewOrganizationForm,
     showOrganizationDetailsPage,
-    organizationValidation
+    organizationValidation,
     showEditOrganizationForm
 } from './controllers/organizations.js';
 import { showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
