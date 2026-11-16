@@ -19,6 +19,7 @@
                 <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
                 <strong><%= organization.name %></strong>
               </a>: <%= organization.contact_email %>
+              <a href="/edit-organization/<%= organization.organization_id %>">Edit Organization</a>
             </li>
           <% }) %>
         <% } else { %>
@@ -29,5 +30,4 @@
   </section>
 </section>
 <p><a href="/new-organization">Add a new organization</a></p>
-<p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
 <%- include('partials/footer') %>
