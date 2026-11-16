@@ -29,7 +29,7 @@ const processNewOrganizationForm = async (req, res) => {
     const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations
 
     const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
-    res.redirect(`/organization/${organizationId}`);
+    res.redirect(`/organizations/${organizationId}`);
 };
 
 // Define any controller functions
