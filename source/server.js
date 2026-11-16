@@ -3,7 +3,20 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './models/db.js';
 import router from './routes.js';
+import session from 'express-session';
+import flash from './src/middleware/flash.js';
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
+// Use flash message middleware
+app.use(flash);
+// Set up session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+}));
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
