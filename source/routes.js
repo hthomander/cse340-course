@@ -5,6 +5,7 @@ import {
     showOrganizationsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
+    processEditOrganizationForm,
     showOrganizationDetailsPage,
     organizationValidation,
     showEditOrganizationForm
@@ -31,9 +32,6 @@ router.get('/new-organization', showNewOrganizationForm);
 
 // Route to handle new organization form submission
 router.post('/new-organization', organizationValidation,processNewOrganizationForm);
-
-// Route to handle the edit organization form submission
-router.post('/edit-organization/:id', processEditOrganizationForm);
 
 // Route to handle the edit organization form submission
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
