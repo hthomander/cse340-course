@@ -69,6 +69,14 @@ const processNewOrganizationForm = async (req, res) => {
     res.redirect(`/organizations/${organizationId}`);
 };
 
+const showEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const organizationDetails = await getOrganizationDetails(organizationId);
+
+    const title = 'Edit Organization';
+    res.render('edit-organization', { title, organizationDetails });
+};
+
 // Define any controller functions
 const showOrganizationDetailsPage = async (req, res, next) => {
     const organizationId = req.params.id;
@@ -89,6 +97,7 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 // Export any controller functions
 export {
     showOrganizationsPage,
+    showEditOrganizationForm,
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
