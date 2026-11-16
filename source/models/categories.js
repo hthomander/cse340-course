@@ -99,5 +99,6 @@ export {
     getCategoryById,
     getCategoriesByProjectId,
     getCategoriesByOrganizationId,
-    getProjectsByCategoryId
+    getProjectsByCategoryId,
+    updateCategoryAssignments
 };
