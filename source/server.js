@@ -4,19 +4,10 @@ import path from 'path';
 import { testConnection } from './models/db.js';
 import router from './routes.js';
 import session from 'express-session';
-import flash from './src/middleware/flash.js';
+import flash from './middleware/flash.js';
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
-// Use flash message middleware
-app.use(flash);
-// Set up session management
-app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
-}));
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
@@ -31,6 +22,14 @@ const app = express();
 // Allow Express to receive and process common POST data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// Set up session management before flash messages, which use req.session
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 }
+}));
+app.use(flash);
 /**
   * Configure Express middleware
   */
