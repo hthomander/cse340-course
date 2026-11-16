@@ -32,7 +32,7 @@ const processNewOrganizationForm = async (req, res) => {
     // Set a success flash message
     req.flash('success', 'Organization added successfully!');
     
-    res.redirect(`/organization/${organizationId}`);
+    res.redirect(`/organizations/${organizationId}`);
 };
 
 // Define any controller functions
