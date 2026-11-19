@@ -1,5 +1,5 @@
 // Import any needed model functions
-import { getUpcomingProjects, getProjectDetails, createProject } from '../models/projects.js';
+import { getUpcomingProjects, getProjectDetails, createProject, updateProject } from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';   
 import { body, validationResult } from 'express-validator';
@@ -83,5 +83,45 @@ const processNewProjectForm = async (req, res) => {
     res.redirect('/projects');
 };
 
+const showEditProjectForm = async (req, res, next) => {
+    const project = await getProjectDetails(req.params.id);
+    if (!project) {
+        const error = new Error('Project Not Found');
+        error.status = 404;
+        return next(error);
+    }
+
+    const organizations = await getAllOrganizations();
+    const title = 'Edit Project';
+
+    res.render('edit-project', { title, project, organizations });
+};
+
+const processEditProjectForm = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        errors.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        return res.redirect(`/edit-project/${req.params.id}`);
+    }
+
+    const projectId = req.params.id;
+    const { organizationId, title, description, location, date } = req.body;
+    await updateProject(projectId, title, description, location, date, organizationId);
+
+    req.flash('success', 'Project updated successfully!');
+    res.redirect(`/project/${projectId}`);
+};
+
 // Export any controller functions
-export { showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, projectValidation };
+export {
+    showProjectsPage,
+    showProjectDetailsPage,
+    showNewProjectForm,
+    processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm,
+    projectValidation
+};
