@@ -1,7 +1,12 @@
 <%- include('partials/headers') %>
 
 <main>
-    <h1><%= title %></h1>
+    <h1>
+        <%= title %>
+        <% if (user && user.role_name === 'admin') { %>
+            <span class="role-badge">Administrator</span>
+        <% } %>
+    </h1>
 
     <h2>Dashboard</h2>
     <p>Name: <%= name %></p>
