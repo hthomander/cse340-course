@@ -47,11 +47,6 @@ router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.post('/logout', processLogout);
 
-// User login routes
-router.get('/login', showLoginForm);
-router.post('/login', processLoginForm);
-router.get('/logout', processLogout);
-
 router.get('/', showHomePage);
 router.get('/organizations', showOrganizationsPage);
 router.get('/organizations/:id', showOrganizationDetailsPage);
