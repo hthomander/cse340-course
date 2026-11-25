@@ -25,9 +25,11 @@ const createUser = async (name, email, passwordHash) => {
 
 const findUserByEmail = async (email) => {
     const query = `
-        SELECT user_id, name, email, password_hash, role_id 
-        FROM users 
-        WHERE email = $1
+        SELECT users.user_id, users.name, users.email, users.password_hash,
+               users.role_id, roles.role_name
+        FROM users
+        JOIN roles ON roles.role_id = users.role_id
+        WHERE users.email = $1
     `;
     const queryParams = [email];
     
@@ -38,6 +40,18 @@ const findUserByEmail = async (email) => {
     }
     
     return result.rows[0];
+};
+
+const findAllUsers = async () => {
+    const query = `
+        SELECT users.user_id, users.name, users.email, roles.role_name
+        FROM users
+        LEFT JOIN roles ON roles.role_id = users.role_id
+        ORDER BY users.name, users.email
+    `;
+
+    const result = await db.query(query);
+    return result.rows;
 };
 
 const verifyPassword = async (password, passwordHash) => {
@@ -55,4 +69,4 @@ const authenticateUser = async (email, password) => {
     return authenticatedUser;
 };
 
-export { createUser, authenticateUser };
+export { createUser, authenticateUser, findAllUsers };

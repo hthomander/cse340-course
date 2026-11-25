@@ -1,0 +1,25 @@
+<%- include('partials/headers') %>
+
+<section class="page-container">
+    <header class="page-header">
+        <h1><%= title %></h1>
+    </header>
+
+    <% if (users.length > 0) { %>
+        <div class="project-organization">
+            <ul class="project-list">
+                <% users.forEach((registeredUser) => { %>
+                    <li class="project-item">
+                        <h2 class="project-title"><%= registeredUser.name %></h2>
+                        <p>Email: <%= registeredUser.email %></p>
+                        <p>Role: <%= registeredUser.role_name || 'Unassigned' %></p>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } else { %>
+        <p>No registered users found.</p>
+    <% } %>
+</section>
+
+<%- include('partials/footer') %>
