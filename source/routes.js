@@ -33,13 +33,24 @@ import {
 import { testErrorPage } from './controllers/errors.js';
 import {
     showUserRegistrationForm,
-    processUserRegistrationForm
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout
 } from './controllers/users.js';
 const router = express.Router();
 
 // User registration routes
 router.get('/register', showUserRegistrationForm);
 router.post('/register', processUserRegistrationForm);
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.post('/logout', processLogout);
+
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
 
 router.get('/', showHomePage);
 router.get('/organizations', showOrganizationsPage);

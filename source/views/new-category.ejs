@@ -1,20 +1,28 @@
-<%- include('partials/headers') %>
-<main>
-  <h1><%= title %></h1>
+<%- include('partials/header') %>
+    <main>
+        <h1><%= title %></h1>
 
-  <form action="/new-category" method="POST">
-    <div class="form-group">
-      <label for="name">Category Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        required
-        maxlength="100"
-      />
-    </div>
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="email">Email (Username)</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                />
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </main>   
 
-    <button type="submit">Create Category</button>
-  </form>
-</main>
 <%- include('partials/footer') %>
