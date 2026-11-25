@@ -1,5 +1,9 @@
 import express from 'express';
 
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
 import { showHomePage } from './controllers/index.js';
 import {
     showOrganizationsPage,
