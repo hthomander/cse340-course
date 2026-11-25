@@ -22,12 +22,4 @@ const createUser = async (name, email, passwordHash) => {
     return result.rows[0].user_id;
 };
 
-import bcrypt from 'bcrypt';
-const saltRounds = 10;
-const password = 'user-password';
-const passwordHash = await bcrypt.hash(password, saltRounds);
-
-// The hash looks like: $2b$10$N9qo8uLOickgx2ZMRZoMye...
-console.log(passwordHash);
-
 export { createUser };

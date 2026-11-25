@@ -1,9 +1,5 @@
 import express from 'express';
 
-// User registration routes
-router.get('/register', showUserRegistrationForm);
-router.post('/register', processUserRegistrationForm);
-
 import { showHomePage } from './controllers/index.js';
 import {
     showOrganizationsPage,
@@ -35,7 +31,15 @@ import {
     categoryValidation
 } from './controllers/categories.js';
 import { testErrorPage } from './controllers/errors.js';
+import {
+    showUserRegistrationForm,
+    processUserRegistrationForm
+} from './controllers/users.js';
 const router = express.Router();
+
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
 
 router.get('/', showHomePage);
 router.get('/organizations', showOrganizationsPage);
