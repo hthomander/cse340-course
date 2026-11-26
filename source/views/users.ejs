@@ -13,6 +13,24 @@
                         <h2 class="project-title"><%= registeredUser.name %></h2>
                         <p>Email: <%= registeredUser.email %></p>
                         <p>Role: <%= registeredUser.role_name || 'Unassigned' %></p>
+                        <form action="/users/<%= registeredUser.user_id %>/role" method="POST">
+                            <label for="role-<%= registeredUser.user_id %>">Change role</label>
+                            <select
+                                id="role-<%= registeredUser.user_id %>"
+                                name="role_name"
+                                required
+                            >
+                                <% roles.forEach((role) => { %>
+                                    <option
+                                        value="<%= role.role_name %>"
+                                        <%= role.role_name === registeredUser.role_name ? 'selected' : '' %>
+                                    >
+                                        <%= role.role_name %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                            <button type="submit">Save role</button>
+                        </form>
                     </li>
                 <% }); %>
             </ul>

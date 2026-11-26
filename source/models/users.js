@@ -54,6 +54,29 @@ const findAllUsers = async () => {
     return result.rows;
 };
 
+const findAllRoles = async () => {
+    const query = `
+        SELECT role_id, role_name
+        FROM roles
+        ORDER BY role_name
+    `;
+
+    const result = await db.query(query);
+    return result.rows;
+};
+
+const updateUserRole = async (userId, roleName) => {
+    const query = `
+        UPDATE users
+        SET role_id = (SELECT role_id FROM roles WHERE role_name = $2)
+        WHERE user_id = $1
+          AND EXISTS (SELECT 1 FROM roles WHERE role_name = $2)
+        RETURNING user_id
+    `;
+    const result = await db.query(query, [userId, roleName]);
+    return result.rows.length > 0;
+};
+
 const verifyPassword = async (password, passwordHash) => {
     return bcrypt.compare(password, passwordHash);
 };
@@ -69,4 +92,4 @@ const authenticateUser = async (email, password) => {
     return authenticatedUser;
 };
 
-export { createUser, authenticateUser, findAllUsers };
+export { createUser, authenticateUser, findAllUsers, findAllRoles, updateUserRole };

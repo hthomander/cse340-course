@@ -1,5 +1,11 @@
 import bcrypt from 'bcrypt';
-import { authenticateUser, createUser, findAllUsers } from '../models/users.js';
+import {
+    authenticateUser,
+    createUser,
+    findAllUsers,
+    findAllRoles,
+    updateUserRole
+} from '../models/users.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -97,8 +103,45 @@ const showDashboard = (req, res) => {
 
 const showUsersPage = async (req, res, next) => {
     try {
-        const users = await findAllUsers();
-        return res.render('users', { title: 'Registered Users', users });
+        const [users, roles] = await Promise.all([findAllUsers(), findAllRoles()]);
+        return res.render('users', { title: 'Registered Users', users, roles });
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const processUserRoleForm = async (req, res, next) => {
+    const userId = Number(req.params.userId);
+    const { role_name: roleName } = req.body;
+
+    try {
+        if (!Number.isSafeInteger(userId) || userId < 1) {
+            req.flash('error', 'The selected user is invalid.');
+            return res.redirect('/users');
+        }
+
+        const roles = await findAllRoles();
+        if (!roles.some((role) => role.role_name === roleName)) {
+            req.flash('error', 'Select a valid role.');
+            return res.redirect('/users');
+        }
+
+        const updated = await updateUserRole(userId, roleName);
+        if (!updated) {
+            req.flash('error', 'The selected user could not be found.');
+            return res.redirect('/users');
+        }
+
+        if (req.session.user.user_id === userId) {
+            req.session.user.role_name = roleName;
+        }
+
+        req.flash('success', 'User role updated successfully.');
+        return res.redirect(
+            req.session.user.user_id === userId && roleName !== 'admin'
+                ? '/dashboard'
+                : '/users'
+        );
     } catch (error) {
         return next(error);
     }
@@ -113,5 +156,6 @@ export {
     requireLogin,
     requireRole,
     showDashboard,
-    showUsersPage
+    showUsersPage,
+    processUserRoleForm
 };
