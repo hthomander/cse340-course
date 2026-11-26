@@ -4,6 +4,9 @@
   <header class="page-header">
     <h1><%= organizationDetails.name %></h1>
     <p class="subtitle"><%= organizationDetails.description %></p>
+    <% if (user && user.role_name === 'admin') { %>
+      <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+    <% } %>
   </header>
 
   <section>
@@ -40,5 +43,7 @@
     <% } %>
   </section>
 </section>
-<p><a href="/new-organization">Add a new organization</a></p>
+<% if (user && user.role_name === 'admin') { %>
+  <p><a href="/new-organization">Add a new organization</a></p>
+<% } %>
 <%- include('partials/footer') %>
