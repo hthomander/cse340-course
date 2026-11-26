@@ -8,7 +8,8 @@
   "main": "source/server.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "node -r dotenv/config source/server.js"
+    "start": "node -r dotenv/config source/server.js",
+    "promote-admin": "node source/scripts/promote-admin.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

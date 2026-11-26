@@ -77,6 +77,18 @@ const updateUserRole = async (userId, roleName) => {
     return result.rows.length > 0;
 };
 
+const promoteUserToAdmin = async (email) => {
+    const query = `
+        UPDATE users
+        SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
+        WHERE email = $1
+          AND EXISTS (SELECT 1 FROM roles WHERE role_name = 'admin')
+        RETURNING name, email
+    `;
+    const result = await db.query(query, [email]);
+    return result.rows[0] || null;
+};
+
 const verifyPassword = async (password, passwordHash) => {
     return bcrypt.compare(password, passwordHash);
 };
@@ -92,4 +104,11 @@ const authenticateUser = async (email, password) => {
     return authenticatedUser;
 };
 
-export { createUser, authenticateUser, findAllUsers, findAllRoles, updateUserRole };
+export {
+    createUser,
+    authenticateUser,
+    findAllUsers,
+    findAllRoles,
+    updateUserRole,
+    promoteUserToAdmin
+};
